@@ -5,6 +5,13 @@ class Carts::DiscountsController < ApplicationController
     render json: object.call
   end
 
+  def update
+    discount = Discount.find(params[:id])
+    discount.update_attributes(discount_params)
+    object = PrepareCartObject.new
+    render json: object.call
+  end
+
   private
 
   def discount_params
