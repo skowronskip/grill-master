@@ -9,6 +9,22 @@ class Carts::ItemsController < ApplicationController
     render json: object.call
   end
 
+  def update
+    begin
+      item = Item.find(params[:id])
+      quantity = params[:quantity] || 1
+      if quantity > 0
+        item.update_attributes(item_params)
+      else
+        Item.destroy(params[:id])
+      end
+      object = PrepareCartObject.new
+      render json: object.call
+    rescue
+      render json: {error: "Item not found"}
+    end
+  end
+
   private
 
   def item_params
